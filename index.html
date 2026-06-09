@@ -192,8 +192,8 @@
 
 <div class="header">
   <div class="header-sub">Персональный план · 189см · 70кг · 24 года</div>
-  <div class="header-title"><span>WORKOUT</span> ПЛАН</div>
-  <div class="header-desc">Цель: +15кг чистой массы за 12 месяцев</div>
+  <div class="header-title"><span>MASS</span> ФАЗА</div>
+  <div class="header-desc">Максимальный массонабор · сила · крупная форма</div>
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('workouts', this)">🏋️ Зал</button>
     <button class="tab-btn" onclick="switchTab('supps', this)">💊 Добавки</button>
@@ -238,22 +238,24 @@
     <div class="totals-title">Дневная цель</div>
     <div class="totals-grid">
       <div class="total-item"><div class="total-label">Калории</div><div class="total-val" style="color:var(--accent)">3150</div><div class="total-unit">ккал</div></div>
-      <div class="total-item"><div class="total-label">Белок</div><div class="total-val" style="color:var(--red)">305</div><div class="total-unit">г</div></div>
+      <div class="total-item"><div class="total-label">Белок</div><div class="total-val" style="color:var(--red)">200</div><div class="total-unit">г</div></div>
       <div class="total-item"><div class="total-label">Углев</div><div class="total-val" style="color:var(--blue)">288</div><div class="total-unit">г</div></div>
       <div class="total-item"><div class="total-label">Жиры</div><div class="total-val" style="color:var(--purple)">66</div><div class="total-unit">г</div></div>
     </div>
-    <div class="totals-note">💡 Это <strong>профицит ~400 ккал</strong> для твоего метаболизма. Без профицита мышцы не растут. Ешь каждые <strong>3–4 часа</strong>.</div>
+    <div class="totals-note">💡 <strong>200г белка</strong> достаточно для роста (наука: 2.2г/кг). Главное для тебя — <strong>профицит калорий</strong>. Не растёшь за 2 недели — добавь 300 ккал. Ешь каждые <strong>3 часа</strong>, не пропускай приёмы.</div>
   </div>
   <div id="mealsContainer"></div>
   <div class="rules">
-    <div class="cheatsheet-title" style="font-size:9px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;font-weight:800;margin-bottom:12px;">Правила которые изменят всё</div>
-    <div class="rule-item"><span>💧</span><span>3+ литра воды в день. На тренировке каждые 15–20 минут.</span></div>
-    <div class="rule-item"><span>😴</span><span>8–9 часов сна. Тестостерон и GH выделяются именно ночью.</span></div>
-    <div class="rule-item"><span>📈</span><span>Каждые 2 недели добавляй 2.5–5кг или 1–2 повторения.</span></div>
-    <div class="rule-item"><span>🍳</span><span>Не можешь съесть — добавь гейнер. Жидкие калории легче.</span></div>
-    <div class="rule-item"><span>🔄</span><span>Пересматривай план каждые 8 недель. Тело адаптируется.</span></div>
+    <div class="cheatsheet-title" style="font-size:9px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;font-weight:800;margin-bottom:12px;">Правила фазы массы</div>
+    <div class="rule-item"><span>🍽️</span><span>Профицит — закон. Не набираешь за 2 недели — добавь 300 ккал в день.</span></div>
+    <div class="rule-item"><span>📈</span><span>Прогрессивная нагрузка: каждые 2 недели +2.5кг или +1-2 повтора.</span></div>
+    <div class="rule-item"><span>🚫</span><span>Минимум кардио. Бег сейчас = потеря калорий нужных для роста.</span></div>
+    <div class="rule-item"><span>😴</span><span>8-9 часов сна. Тестостерон и гормон роста выделяются ночью.</span></div>
+    <div class="rule-item"><span>💧</span><span>3+ литра воды. Гидратация критична для роста мышц.</span></div>
+    <div class="rule-item"><span>⏱️</span><span>Не пропускай приёмы пищи. Пропустил — добавь гейнер, жидкие калории легче.</span></div>
+    <div class="rule-item"><span>🎯</span><span>Цель фазы: 83-85 кг. Потом переход на серьёзный кроссфит к подаче.</span></div>
   </div>
-  <div class="footer">Через 12 месяцев тебя не узнают</div>
+  <div class="footer">Сначала масса · потом кроссфит · потом Ravens</div>
 </div>
 </div>
 
@@ -285,9 +287,9 @@ const days = [
     ]},
   { day:"СР", label:"Отдых / Восстановление", color:"#22C55E", icon:"🧘",
     exercises:[
-      { name:"Лёгкое кардио", sets:"1", reps:"20–30 мин", rest:"—", tip:"Ходьба или велосипед. Восстанавливает, не сжигает мышцы.", kali:false },
-      { name:"Растяжка + мобильность", sets:"1", reps:"15–20 мин", rest:"—", tip:"Плечи, грудной отдел, бёдра. Предотвращает травмы.", kali:false },
-      { name:"Контрастный душ", sets:"1", reps:"10 мин", rest:"—", tip:"30с горячий / 30с холодный × 5–7 раз. Ускоряет восстановление.", kali:false },
+      { name:"Лёгкая прогулка (опц.)", sets:"1", reps:"20-30 мин", rest:"—", tip:"Только ходьба для здоровья сердца. НЕ бег — он сожжёт калории нужные для массы.", kali:false },
+      { name:"Растяжка + мобильность", sets:"1", reps:"15 мин", rest:"—", tip:"Плечи, грудной отдел, бёдра. Восстановление между силовыми днями.", kali:false },
+      { name:"Контрастный душ", sets:"1", reps:"10 мин", rest:"—", tip:"Ускоряет восстановление. Но НЕ сразу после силовой — холод тормозит рост мышц.", kali:false },
     ]},
   { day:"ЧТ", label:"Ноги", color:"#F59E0B", icon:"🦵",
     exercises:[
@@ -307,11 +309,11 @@ const days = [
     ]},
   { day:"СБ", label:"Полный отдых", color:"#475569", icon:"😴",
     exercises:[
-      { name:"Полный отдых", sets:"—", reps:"—", rest:"—", tip:"Мышцы растут не в зале, а во время отдыха. Спи 8–9 часов!", kali:false },
+      { name:"Полный отдых", sets:"—", reps:"—", rest:"—", tip:"Мышцы растут в отдыхе, не в зале. Ешь, спи 8-9 часов. Это рабочий день для роста.", kali:false },
     ]},
   { day:"ВС", label:"Полный отдых", color:"#475569", icon:"😴",
     exercises:[
-      { name:"Полный отдых", sets:"—", reps:"—", rest:"—", tip:"Завтра снова в бой. Ешь, спи, восстанавливайся.", kali:false },
+      { name:"Полный отдых", sets:"—", reps:"—", rest:"—", tip:"Завтра снова в зал. Загружайся калориями, восстанавливайся. Рост происходит сейчас.", kali:false },
     ]},
 ];
 
