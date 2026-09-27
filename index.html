@@ -3,182 +3,192 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>Мой план</title>
+<title>План</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
   :root {
-    --accent: #E8FF00;
-    --red: #FF3D00;
-    --blue: #00BFFF;
-    --purple: #A855F7;
-    --green: #22C55E;
-    --gold: #F59E0B;
-    --cyan: #06B6D4;
-    --bg: #080808;
-    --card: #0f0f0f;
-    --card2: #141414;
-    --border: #1c1c1c;
-    --text: #ffffff;
-    --muted: #555555;
-    --subtle: #333333;
+    --bg: #0b0b0c;
+    --surface: #131315;
+    --surface2: #1a1a1d;
+    --border: #232326;
+    --border-soft: #1c1c1f;
+    --text: #ececea;
+    --text-dim: #8b8b90;
+    --text-faint: #4d4d52;
+    --accent: #c9c2ac;
+    --accent-soft: #c9c2ac22;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'Helvetica Neue', sans-serif;
   }
 
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+    font-family: var(--sans);
     min-height: 100vh;
     overflow-x: hidden;
-    padding-bottom: 80px;
+    padding-bottom: 72px;
   }
 
   /* HEADER */
   .header {
-    background: linear-gradient(180deg, #111 0%, var(--bg) 100%);
-    padding: 20px 16px 0;
-    text-align: center;
+    padding: 14px 20px 0;
     border-bottom: 1px solid var(--border);
   }
-  .header-sub { font-size: 10px; letter-spacing: 4px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
-  .header-title { font-size: 36px; font-weight: 900; letter-spacing: -2px; line-height: 1; margin-bottom: 4px; }
-  .header-title span { color: var(--accent); }
-  .header-desc { color: var(--muted); font-size: 12px; margin-bottom: 16px; }
+  .kicker { font-size: 10px; letter-spacing: 3px; color: var(--text-faint); text-transform: uppercase; margin-bottom: 10px; }
+  .title { font-family: var(--serif); font-size: 30px; font-weight: 500; letter-spacing: -0.3px; line-height: 1.15; margin-bottom: 8px; color: var(--text); }
+  .subtitle { color: var(--text-dim); font-size: 12px; line-height: 1.6; margin-bottom: 20px; max-width: 420px; }
 
   /* TABS */
-  .tabs { display: flex; border-bottom: 1px solid var(--border); }
+  .tabs { display: flex; gap: 2px; }
   .tab-btn {
     flex: 1; background: none; border: none; cursor: pointer;
-    padding: 12px 4px; font-size: 10px; font-weight: 800;
-    letter-spacing: 1.5px; color: var(--muted);
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s; text-transform: uppercase;
-    font-family: inherit;
+    padding: 12px 4px; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; color: var(--text-faint);
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s, border-color 0.15s; text-transform: uppercase;
+    font-family: var(--sans);
   }
-  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-btn.active { color: var(--text); border-bottom-color: var(--accent); }
 
   /* CONTENT */
-  .content { padding: 16px; max-width: 480px; margin: 0 auto; }
+  .content { padding: 18px 20px; max-width: 480px; margin: 0 auto; }
 
-  /* DAY SELECTOR */
-  .day-selector { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 16px; }
-  .day-btn {
-    padding: 8px 12px; border-radius: 8px; border: 1.5px solid var(--border);
-    background: var(--card); color: var(--muted);
-    font-weight: 900; font-size: 11px; cursor: pointer;
-    transition: all 0.15s; letter-spacing: 1px; font-family: inherit;
+  /* SECTION LABEL */
+  .section-label { font-size: 10px; color: var(--text-faint); letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600; margin-bottom: 10px; }
+
+  /* NOTE BLOCK */
+  .note {
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 13px 15px; margin-bottom: 18px;
+    font-size: 12px; color: var(--text-dim); line-height: 1.65;
   }
-  .day-btn.active { border-color: var(--day-color); background: color-mix(in srgb, var(--day-color) 15%, transparent); color: var(--day-color); }
+  .note strong { color: var(--text); font-weight: 600; }
+
+  /* SELECTOR ROW */
+  .selector-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .sel-btn {
+    padding: 7px 12px; border-radius: 7px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text-faint);
+    font-weight: 600; font-size: 11px; cursor: pointer;
+    transition: all 0.15s; letter-spacing: 0.3px; font-family: var(--sans);
+  }
+  .sel-btn.active { border-color: var(--accent); color: var(--text); background: var(--accent-soft); }
+  .sel-btn .sub { display: block; font-size: 8px; color: var(--text-faint); font-weight: 500; letter-spacing: 0.5px; margin-top: 1px; }
+  .sel-btn.active .sub { color: var(--text-dim); }
 
   /* CARD */
   .card {
-    background: var(--card); border-radius: 16px;
+    background: var(--surface); border-radius: 14px;
     border: 1px solid var(--border); overflow: hidden;
     margin-bottom: 12px;
   }
   .card-header {
     padding: 16px 18px;
     border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 12px;
+    display: flex; align-items: center; gap: 13px;
   }
-  .card-header-icon { font-size: 32px; }
-  .card-tag { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; font-weight: 800; }
-  .card-title { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; }
+  .code-badge {
+    width: 40px; height: 40px; flex-shrink: 0;
+    border: 1px solid var(--border-soft); border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--serif); font-size: 15px; font-weight: 500; color: var(--text-dim);
+  }
+  .card-tag { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600; color: var(--text-faint); margin-bottom: 2px; }
+  .card-title { font-family: var(--serif); font-size: 17px; font-weight: 500; letter-spacing: -0.2px; color: var(--text); }
 
   /* EXERCISE ITEM */
-  .ex-item {
-    padding: 12px 14px;
-    border-bottom: 1px solid #0a0a0a;
-    border-left: 3px solid var(--ex-color, var(--muted));
-  }
+  .ex-item { padding: 13px 16px; border-bottom: 1px solid var(--border-soft); }
   .ex-item:last-child { border-bottom: none; }
-  .ex-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
-  .ex-name { font-weight: 800; font-size: 14px; flex: 1; }
-  .ex-badge {
-    background: color-mix(in srgb, var(--accent) 15%, transparent);
-    color: var(--accent); font-size: 8px; padding: 2px 7px;
-    border-radius: 20px; font-weight: 900; letter-spacing: 1px;
-    white-space: nowrap; margin-top: 2px;
-  }
-  .ex-stats { display: flex; gap: 5px; flex-shrink: 0; }
-  .ex-stat { background: var(--card2); border-radius: 7px; padding: 3px 7px; text-align: center; }
-  .ex-stat-label { font-size: 7px; color: var(--muted); letter-spacing: 1px; }
-  .ex-stat-val { font-size: 11px; font-weight: 800; }
-  .ex-tip { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .ex-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
+  .ex-name { font-weight: 600; font-size: 13.5px; flex: 1; color: var(--text); }
+  .ex-tag { font-size: 8px; color: var(--text-faint); letter-spacing: 1px; text-transform: uppercase; border: 1px solid var(--border-soft); border-radius: 4px; padding: 2px 6px; white-space: nowrap; margin-top: 2px; display: inline-block; }
+  .ex-stats { display: flex; gap: 4px; flex-shrink: 0; }
+  .ex-stat { background: var(--surface2); border-radius: 6px; padding: 3px 7px; text-align: center; min-width: 32px; }
+  .ex-stat-label { font-size: 7px; color: var(--text-faint); letter-spacing: 0.5px; }
+  .ex-stat-val { font-size: 11px; font-weight: 600; color: var(--text); }
+  .ex-tip { font-size: 11px; color: var(--text-dim); line-height: 1.55; }
 
-  /* SUPPLEMENT SELECTOR */
-  .supp-selector { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 16px; }
-  .supp-btn {
-    padding: 6px 10px; border-radius: 8px; border: 1.5px solid var(--border);
-    background: var(--card); color: var(--muted);
-    font-weight: 800; font-size: 9px; cursor: pointer;
-    transition: all 0.15s; letter-spacing: 0.5px; font-family: inherit;
-    white-space: nowrap;
-  }
-  .supp-btn.active { border-color: var(--s-color); background: color-mix(in srgb, var(--s-color) 15%, transparent); color: var(--s-color); }
-
-  /* SUPP ITEM */
-  .supp-item {
-    padding: 14px 16px;
-    border-left: 3px solid var(--s-color, var(--muted));
-    border-bottom: 1px solid #0a0a0a;
-  }
+  /* SUPP / MEAL ITEM (shared pattern with exercise item) */
+  .supp-item, .meal-foods { padding: 13px 16px; border-bottom: 1px solid var(--border-soft); }
   .supp-item:last-child { border-bottom: none; }
   .supp-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
-  .supp-name { font-weight: 800; font-size: 14px; }
-  .supp-dose {
-    font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 700;
-    background: color-mix(in srgb, var(--s-color) 15%, transparent);
-    color: var(--s-color); white-space: nowrap;
-  }
-  .supp-why { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .supp-name { font-weight: 600; font-size: 13.5px; color: var(--text); }
+  .supp-dose { font-size: 10px; padding: 3px 9px; border-radius: 5px; font-weight: 500; border: 1px solid var(--border-soft); color: var(--text-dim); white-space: nowrap; }
+  .supp-why { font-size: 11px; color: var(--text-dim); line-height: 1.55; }
 
   /* CHEATSHEET */
-  .cheatsheet { background: var(--card); border-radius: 14px; border: 1px solid var(--border); padding: 14px 16px; }
-  .cheatsheet-title { font-size: 9px; color: var(--muted); letter-spacing: 3px; text-transform: uppercase; font-weight: 800; margin-bottom: 12px; }
-  .cheat-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
-  .cheat-time { min-width: 65px; font-size: 9px; font-weight: 800; letter-spacing: 0.5px; padding-top: 1px; }
-  .cheat-items { font-size: 11px; color: var(--muted); line-height: 1.6; }
+  .cheatsheet { border: 1px solid var(--border); border-radius: 12px; padding: 15px 16px; }
+  .cheat-row { display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; }
+  .cheat-row:last-child { margin-bottom: 0; }
+  .cheat-time { min-width: 40px; font-size: 10px; font-weight: 600; color: var(--text-dim); padding-top: 1px; }
+  .cheat-items { font-size: 11px; color: var(--text-faint); line-height: 1.6; }
 
   /* MEALS */
-  .meal-card { background: var(--card); border-radius: 14px; overflow: hidden; margin-bottom: 10px; border: 1px solid var(--border); }
-  .meal-header { padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-  .meal-left { display: flex; align-items: center; gap: 10px; }
-  .meal-icon { font-size: 24px; }
-  .meal-time { font-size: 9px; font-weight: 800; letter-spacing: 2px; }
-  .meal-name { font-size: 15px; font-weight: 900; }
+  .meal-card { background: var(--surface); border-radius: 12px; overflow: hidden; margin-bottom: 10px; border: 1px solid var(--border); }
+  .meal-header { padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid var(--border); }
+  .meal-time { font-size: 9px; font-weight: 600; letter-spacing: 1px; color: var(--text-faint); text-transform: uppercase; }
+  .meal-name { font-family: var(--serif); font-size: 15px; font-weight: 500; color: var(--text); }
   .meal-macros { display: flex; gap: 6px; flex-wrap: wrap; }
-  .macro { background: var(--card2); border-radius: 7px; padding: 3px 7px; text-align: center; }
-  .macro-label { font-size: 7px; color: var(--muted); }
-  .macro-val { font-size: 12px; font-weight: 800; }
-  .meal-foods { padding: 0 14px 12px; }
-  .food-item { font-size: 12px; color: var(--muted); padding: 4px 0; border-bottom: 1px solid #0a0a0a; padding-left: 10px; line-height: 1.5; }
-  .food-item:last-child { border-bottom: none; }
+  .macro { background: var(--surface2); border-radius: 6px; padding: 3px 8px; text-align: center; }
+  .macro-label { font-size: 7px; color: var(--text-faint); }
+  .macro-val { font-size: 12px; font-weight: 600; color: var(--text); }
+  .food-item { font-size: 12px; color: var(--text-dim); padding: 3px 0; line-height: 1.55; }
 
   /* TOTALS */
-  .totals { background: var(--card); border-radius: 16px; border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent); padding: 16px; margin-bottom: 16px; }
-  .totals-title { font-size: 9px; color: var(--accent); letter-spacing: 4px; text-transform: uppercase; font-weight: 800; margin-bottom: 12px; }
-  .totals-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+  .totals { border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 18px; }
+  .totals-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
   .total-item { text-align: center; }
-  .total-label { font-size: 8px; color: var(--muted); letter-spacing: 1px; margin-bottom: 3px; text-transform: uppercase; }
-  .total-val { font-size: 24px; font-weight: 900; line-height: 1; }
-  .total-unit { font-size: 10px; color: var(--muted); }
-  .totals-note { background: var(--card2); border-radius: 10px; padding: 10px 12px; font-size: 11px; color: var(--muted); line-height: 1.6; }
-  .totals-note strong { color: var(--accent); }
+  .total-label { font-size: 8px; color: var(--text-faint); letter-spacing: 1px; margin-bottom: 4px; text-transform: uppercase; }
+  .total-val { font-family: var(--serif); font-size: 24px; font-weight: 500; line-height: 1; color: var(--text); }
+  .total-unit { font-size: 10px; color: var(--text-faint); }
+  .totals-note { border-top: 1px solid var(--border); padding-top: 12px; font-size: 11.5px; color: var(--text-dim); line-height: 1.65; }
+  .totals-note strong { color: var(--text); font-weight: 600; }
 
   /* RULES */
-  .rules { background: var(--card); border-radius: 14px; border: 1px solid var(--border); padding: 14px 16px; margin-top: 12px; }
-  .rule-item { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; font-size: 12px; color: var(--muted); line-height: 1.5; }
-  .rule-item:last-child { margin-bottom: 0; }
+  .rules { border: 1px solid var(--border); border-radius: 12px; padding: 15px 16px; margin-top: 14px; }
+  .rule-item { font-size: 12px; color: var(--text-dim); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border-soft); }
+  .rule-item:last-child { border-bottom: none; padding-bottom: 0; }
 
   /* LEGEND */
-  .legend { display: flex; gap: 16px; justify-content: center; margin-top: 12px; }
-  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--muted); }
-  .legend-line { width: 14px; height: 3px; border-radius: 2px; }
+  .legend { display: flex; gap: 18px; justify-content: center; margin-top: 14px; }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 10px; color: var(--text-faint); }
+  .legend-swatch { width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--border-soft); }
+  .legend-swatch.kali { border-style: dashed; border-color: var(--accent); }
 
   /* FOOTER */
-  .footer { text-align: center; margin-top: 24px; font-size: 10px; color: var(--subtle); letter-spacing: 3px; text-transform: uppercase; }
+  .footer { text-align: center; margin-top: 28px; font-size: 9px; color: var(--text-faint); letter-spacing: 2.5px; text-transform: uppercase; }
+
+  /* PROGRESSION TAB */
+  .timeline { border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 18px; }
+  .timeline-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-faint); margin-bottom: 8px; }
+  .timeline-track { position: relative; height: 6px; border-radius: 3px; background: var(--surface2); overflow: hidden; margin-bottom: 8px; }
+  .timeline-fill { position: absolute; top: 0; left: 0; bottom: 0; background: var(--border-soft); }
+  .timeline-marker { position: absolute; top: -4px; width: 2px; height: 14px; background: var(--accent); }
+  .timeline-status { font-size: 12px; color: var(--text); font-weight: 500; }
+  .timeline-sub { font-size: 11px; color: var(--text-dim); margin-top: 3px; line-height: 1.5; }
+
+  .lift-input-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--border); gap: 12px; }
+  .lift-input-label { font-size: 12px; color: var(--text-dim); }
+  .lift-input-label strong { display: block; font-size: 13.5px; color: var(--text); font-weight: 600; margin-bottom: 2px; }
+  .lift-input {
+    width: 68px; background: var(--surface2); border: 1px solid var(--border-soft);
+    border-radius: 7px; color: var(--text); font-family: var(--serif); font-size: 15px;
+    text-align: center; padding: 7px 4px; font-weight: 500;
+  }
+  .lift-input:focus { outline: none; border-color: var(--accent); }
+
+  .prog-table { width: 100%; border-collapse: collapse; }
+  .prog-table th { font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-faint); text-align: left; padding: 8px 16px; font-weight: 600; border-bottom: 1px solid var(--border); }
+  .prog-table td { font-size: 12.5px; padding: 9px 16px; border-bottom: 1px solid var(--border-soft); color: var(--text-dim); }
+  .prog-table tr:last-child td { border-bottom: none; }
+  .prog-table td.wt { font-family: var(--serif); font-size: 14px; color: var(--text); font-weight: 500; }
+  .prog-table td.deload { color: var(--accent); }
+  .prog-note { font-size: 11px; color: var(--text-faint); padding: 12px 16px; line-height: 1.6; border-top: 1px solid var(--border); }
 
   /* HIDDEN */
   .tab-content { display: none; }
@@ -191,13 +201,11 @@
 <body>
 
 <div class="header">
-  <div class="header-sub">Персональный план · 189см · 70кг · 24 года</div>
-  <div class="header-title"><span>MASS</span> ФАЗА</div>
-  <div class="header-desc">Максимальный массонабор · сила · крупная форма</div>
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('workouts', this)">🏋️ Зал</button>
-    <button class="tab-btn" onclick="switchTab('supps', this)">💊 Добавки</button>
-    <button class="tab-btn" onclick="switchTab('food', this)">🍽️ Питание</button>
+    <button class="tab-btn active" onclick="switchTab('workouts', this)">Тренировки</button>
+    <button class="tab-btn" onclick="switchTab('progress', this)">Прогрессия</button>
+    <button class="tab-btn" onclick="switchTab('supps', this)">Добавки</button>
+    <button class="tab-btn" onclick="switchTab('food', this)">Питание</button>
   </div>
 </div>
 
@@ -205,19 +213,32 @@
 <div id="workouts" class="tab-content active">
 <div class="content">
 
-  <div class="day-selector" id="daySelector"></div>
+  <div class="note"><strong>Верх / низ × 2 в неделю.</strong> Каждая группа получает стимул дважды: A — силовой день, тяжёлый вес, низкие повторы; B — объёмный день, другой угол, больше повторений. Четыре тренировки в неделю, три дня отдыха.</div>
+
+  <div class="section-label">День</div>
+  <div class="selector-row" id="daySelector"></div>
   <div id="dayCard"></div>
 
   <div class="legend">
-    <div class="legend-item">
-      <div class="legend-line" style="background:#555"></div>
-      Тренажёры
-    </div>
-    <div class="legend-item">
-      <div class="legend-line" style="background:var(--accent)"></div>
-      Калистеника
-    </div>
+    <div class="legend-item"><div class="legend-swatch"></div>Тренажёры / штанга</div>
+    <div class="legend-item"><div class="legend-swatch kali"></div>Калистеника</div>
   </div>
+
+</div>
+</div>
+
+<!-- ═══════════════ PROGRESSION ═══════════════ -->
+<div id="progress" class="tab-content">
+<div class="content">
+
+  <div class="section-label">Таймлайн</div>
+  <div class="timeline" id="timeline"></div>
+
+  <div class="note">Схема: <strong>двойная прогрессия</strong>. Работай в диапазоне повторений — сначала добавляй повторения, и только когда верх диапазона взят на всех подходах с чистой техникой, добавляй вес и возвращайся к низу диапазона. Каждые 8 недель (раз в 4 чекпоинта) — разгрузочная неделя: рабочий вес ниже на ~10%, акцент на технику.</div>
+
+  <div class="section-label">Упражнение</div>
+  <div class="selector-row" id="liftSelector"></div>
+  <div id="liftCard"></div>
 
 </div>
 </div>
@@ -225,9 +246,11 @@
 <!-- ═══════════════ SUPPLEMENTS ═══════════════ -->
 <div id="supps" class="tab-content">
 <div class="content">
-  <div class="supp-selector" id="suppSelector"></div>
+  <div class="section-label">Время приёма</div>
+  <div class="selector-row" id="suppSelector"></div>
   <div id="suppCard"></div>
-  <div class="cheatsheet" id="cheatsheet" style="margin-top:12px"></div>
+  <div class="section-label" style="margin-top:18px">Весь день</div>
+  <div class="cheatsheet" id="cheatsheet"></div>
 </div>
 </div>
 
@@ -235,27 +258,26 @@
 <div id="food" class="tab-content">
 <div class="content">
   <div class="totals">
-    <div class="totals-title">Дневная цель</div>
+    <div class="section-label">Дневная цель · Фаза 1 (набор)</div>
     <div class="totals-grid">
-      <div class="total-item"><div class="total-label">Калории</div><div class="total-val" style="color:var(--accent)">3150</div><div class="total-unit">ккал</div></div>
-      <div class="total-item"><div class="total-label">Белок</div><div class="total-val" style="color:var(--red)">200</div><div class="total-unit">г</div></div>
-      <div class="total-item"><div class="total-label">Углев</div><div class="total-val" style="color:var(--blue)">288</div><div class="total-unit">г</div></div>
-      <div class="total-item"><div class="total-label">Жиры</div><div class="total-val" style="color:var(--purple)">66</div><div class="total-unit">г</div></div>
+      <div class="total-item"><div class="total-label">Калории</div><div class="total-val">3300</div><div class="total-unit">ккал</div></div>
+      <div class="total-item"><div class="total-label">Белок</div><div class="total-val">180</div><div class="total-unit">г</div></div>
+      <div class="total-item"><div class="total-label">Углев</div><div class="total-val">380</div><div class="total-unit">г</div></div>
+      <div class="total-item"><div class="total-label">Жиры</div><div class="total-val">90</div><div class="total-unit">г</div></div>
     </div>
-    <div class="totals-note">💡 <strong>200г белка</strong> достаточно для роста (наука: 2.2г/кг). Главное для тебя — <strong>профицит калорий</strong>. Не растёшь за 2 недели — добавь 300 ккал. Ешь каждые <strong>3 часа</strong>, не пропускай приёмы.</div>
+    <div class="totals-note">Сейчас — <strong>профицит ~500–600 ккал</strong>: приоритет максимальный набор массы и силы. Ближе к весне переходим на лёгкий дефицит, чтобы раскрыть рельеф к лету. Ешь каждые <strong>3–4 часа</strong>.</div>
   </div>
+  <div class="section-label">Приёмы пищи</div>
   <div id="mealsContainer"></div>
   <div class="rules">
-    <div class="cheatsheet-title" style="font-size:9px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;font-weight:800;margin-bottom:12px;">Правила фазы массы</div>
-    <div class="rule-item"><span>🍽️</span><span>Профицит — закон. Не набираешь за 2 недели — добавь 300 ккал в день.</span></div>
-    <div class="rule-item"><span>📈</span><span>Прогрессивная нагрузка: каждые 2 недели +2.5кг или +1-2 повтора.</span></div>
-    <div class="rule-item"><span>🚫</span><span>Минимум кардио. Бег сейчас = потеря калорий нужных для роста.</span></div>
-    <div class="rule-item"><span>😴</span><span>8-9 часов сна. Тестостерон и гормон роста выделяются ночью.</span></div>
-    <div class="rule-item"><span>💧</span><span>3+ литра воды. Гидратация критична для роста мышц.</span></div>
-    <div class="rule-item"><span>⏱️</span><span>Не пропускай приёмы пищи. Пропустил — добавь гейнер, жидкие калории легче.</span></div>
-    <div class="rule-item"><span>🎯</span><span>Цель фазы: 83-85 кг. Потом переход на серьёзный кроссфит к подаче.</span></div>
+    <div class="section-label">Правила, которые решают всё</div>
+    <div class="rule-item">3+ литра воды в день. На тренировке — каждые 15–20 минут.</div>
+    <div class="rule-item">8–9 часов сна. Тестостерон и гормон роста выделяются именно ночью.</div>
+    <div class="rule-item">Каждые 2 недели — прибавка в весе или повторениях (см. вкладку «Прогрессия»).</div>
+    <div class="rule-item">Не получается доесть — добавь гейнер. Жидкие калории усваиваются легче.</div>
+    <div class="rule-item">Пересматривай план каждые 8 недель. Тело адаптируется к нагрузке.</div>
   </div>
-  <div class="footer">Сначала масса · потом кроссфит · потом Ravens</div>
+  <div class="footer">План рассчитан на результат к лету</div>
 </div>
 </div>
 
@@ -266,175 +288,176 @@ if (window.Telegram?.WebApp) {
   window.Telegram.WebApp.expand();
 }
 
-// ── DATA ──
+// ── DATA: WORKOUTS ──
+// Сплит: верх/низ × 2 в неделю. A = сила (тяжёлый вес, низкие повторы),
+// B = объём (другой угол, больше повторений).
 const days = [
-  { day:"ПН", label:"Грудь + Трицепс", color:"#FF3D00", icon:"💪",
+  { day:"ПН", code:"A1", label:"Верх A · Сила",
     exercises:[
-      { name:"Жим штанги лёжа", sets:"4", reps:"8–10", rest:"90с", tip:"Главное упражнение. Контролируй опускание.", kali:false },
-      { name:"Отжимания на брусьях + вес", sets:"4", reps:"8–10", rest:"90с", tip:"Добавляй блин к поясу. Работает лучше чем жим гантелей!", kali:true },
-      { name:"Разводка гантелей лёжа", sets:"3", reps:"12–15", rest:"60с", tip:"Растяжка в нижней точке — ключ к росту груди.", kali:false },
-      { name:"Французский жим", sets:"3", reps:"10–12", rest:"75с", tip:"Локти неподвижны. Медленно вниз.", kali:false },
-      { name:"Трицепс на блоке (верёвка)", sets:"3", reps:"12–15", rest:"60с", tip:"В нижней точке разведи руки — максимальное сокращение.", kali:false },
+      { name:"Жим штанги лёжа", sets:"4", reps:"6–8", rest:"120с", tip:"Тяжёлый вес, полный контроль. Главный строитель силы и массы груди.", kali:false },
+      { name:"Тяга штанги в наклоне", sets:"4", reps:"6–8", rest:"120с", tip:"Тяни к поясу, своди лопатки. Основа силы спины.", kali:false },
+      { name:"Жим штанги стоя (армейский)", sets:"3", reps:"6–8", rest:"90с", tip:"Сила и масса плеч. Не читингуй поясницей.", kali:false },
+      { name:"Подтягивания + вес", sets:"4", reps:"6–8", rest:"90с", tip:"Добавляй блин к поясу, когда 8+ даются легко. Прямой перенос силы в будущую калистенику.", kali:true },
+      { name:"Французский жим лёжа", sets:"3", reps:"8–10", rest:"75с", tip:"Локти неподвижны. Добивка трицепса после жимов.", kali:false },
     ]},
-  { day:"ВТ", label:"Спина + Бицепс", color:"#00BFFF", icon:"🏋️",
+  { day:"ВТ", code:"A2", label:"Низ A · Сила",
     exercises:[
-      { name:"Становая тяга", sets:"4", reps:"6–8", rest:"120с", tip:"Спина прямая! Самое мощное упражнение для всей массы.", kali:false },
-      { name:"Подтягивания + вес", sets:"4", reps:"6–10", rest:"90с", tip:"Добавляй блин когда делаешь 10+. Главный строитель спины.", kali:true },
-      { name:"Тяга штанги в наклоне", sets:"4", reps:"8–10", rest:"90с", tip:"Тяни к поясу, не к груди. Сводь лопатки.", kali:false },
-      { name:"Тяга горизонтального блока", sets:"3", reps:"12–15", rest:"60с", tip:"Задержись в конечной точке на секунду.", kali:false },
-      { name:"Сгибания со штангой стоя", sets:"3", reps:"10–12", rest:"75с", tip:"Не раскачивай корпус. Техника > вес.", kali:false },
-      { name:"Молотки с гантелями", sets:"3", reps:"12–15", rest:"60с", tip:"Нейтральный хват = брахиалис = толщина руки.", kali:false },
+      { name:"Присед со штангой", sets:"4", reps:"6–8", rest:"150с", tip:"Глубже параллели = больше масса. Основа силы всего низа.", kali:false },
+      { name:"Румынская тяга", sets:"4", reps:"6–8", rest:"120с", tip:"Спина прямая, гриф вдоль ног. Задняя поверхность бедра и ягодицы.", kali:false },
+      { name:"Жим ногами", sets:"3", reps:"8–10", rest:"90с", tip:"Добивка квадрицепса после приседа. Широкая постановка ног.", kali:false },
+      { name:"Подъём на носки стоя", sets:"4", reps:"8–10", rest:"60с", tip:"Тяжёлый вес, низкие повторы — сила и толщина икр.", kali:false },
     ]},
-  { day:"СР", label:"Отдых / Восстановление", color:"#22C55E", icon:"🧘",
+  { day:"СР", code:"—", label:"Отдых / восстановление",
     exercises:[
-      { name:"Лёгкая прогулка (опц.)", sets:"1", reps:"20-30 мин", rest:"—", tip:"Только ходьба для здоровья сердца. НЕ бег — он сожжёт калории нужные для массы.", kali:false },
-      { name:"Растяжка + мобильность", sets:"1", reps:"15 мин", rest:"—", tip:"Плечи, грудной отдел, бёдра. Восстановление между силовыми днями.", kali:false },
-      { name:"Контрастный душ", sets:"1", reps:"10 мин", rest:"—", tip:"Ускоряет восстановление. Но НЕ сразу после силовой — холод тормозит рост мышц.", kali:false },
+      { name:"Лёгкое кардио", sets:"1", reps:"15–20 мин", rest:"—", tip:"Ходьба или велосипед. Восстанавливает, не сжигает мышцы.", kali:false },
+      { name:"Растяжка и мобильность", sets:"1", reps:"15–20 мин", rest:"—", tip:"Плечи, грудной отдел, бёдра. Предотвращает травмы при таком объёме.", kali:false },
+      { name:"Контрастный душ", sets:"1", reps:"10 мин", rest:"—", tip:"30с горячий / 30с холодный × 5–7 раз. Ускоряет восстановление между силовыми днями.", kali:false },
     ]},
-  { day:"ЧТ", label:"Ноги", color:"#F59E0B", icon:"🦵",
+  { day:"ЧТ", code:"B1", label:"Верх B · Объём",
     exercises:[
-      { name:"Приседания со штангой", sets:"4", reps:"8–10", rest:"120с", tip:"Глубже параллели = больше масса. Король упражнений.", kali:false },
-      { name:"Жим ногами в тренажёре", sets:"4", reps:"10–12", rest:"90с", tip:"Широкая постановка ног для максимального объёма.", kali:false },
-      { name:"Пистолетик (одна нога)", sets:"3", reps:"6–8 каждая", rest:"75с", tip:"Начни с поддержкой. Развивает баланс и стабилизаторы.", kali:true },
+      { name:"Жим гантелей на наклонной", sets:"4", reps:"10–12", rest:"90с", tip:"Другой угол для верха груди, растяжка в нижней точке.", kali:false },
+      { name:"Тяга горизонтального блока", sets:"4", reps:"12–15", rest:"75с", tip:"Задержись в конечной точке на секунду. Объём для толщины спины.", kali:false },
+      { name:"Отжимания на брусьях + вес", sets:"4", reps:"8–10", rest:"90с", tip:"Грудь и трицепс через полную амплитуду с контролем тела.", kali:true },
+      { name:"Разводка гантелей в стороны", sets:"3", reps:"12–15", rest:"60с", tip:"Лёгкий вес и чистая техника важнее тяжёлого с читингом. Объём для плеч.", kali:false },
+      { name:"Сгибания со штангой стоя", sets:"3", reps:"10–12", rest:"60с", tip:"Не раскачивай корпус. Техника важнее веса.", kali:false },
+      { name:"Молотки с гантелями", sets:"3", reps:"12–15", rest:"60с", tip:"Нейтральный хват — брахиалис, толщина руки.", kali:false },
+    ]},
+  { day:"ПТ", code:"B2", label:"Низ B · Объём",
+    exercises:[
+      { name:"Становая тяга", sets:"3", reps:"8–10", rest:"120с", tip:"Спина прямая. Второй день на заднюю цепь — объём умеренный после понедельника.", kali:false },
+      { name:"Выпады с гантелями", sets:"3", reps:"12–15 каждая", rest:"75с", tip:"Другой угол для квадрицепса и ягодиц.", kali:false },
+      { name:"Пистолетик (одна нога)", sets:"3", reps:"6–8 каждая", rest:"75с", tip:"Начни с поддержкой. Баланс и стабилизаторы — пригодится в калистенике.", kali:true },
       { name:"Сгибания ног лёжа", sets:"3", reps:"12–15", rest:"60с", tip:"Изоляция бицепса бедра. Медленно опускай.", kali:false },
-      { name:"Подъём на носки стоя", sets:"4", reps:"15–20", rest:"45с", tip:"Икры медленно реагируют — нужен большой объём.", kali:false },
+      { name:"Подъём на носки сидя", sets:"4", reps:"15–20", rest:"45с", tip:"Икры медленно реагируют — нужен большой объём в этот день.", kali:false },
     ]},
-  { day:"ПТ", label:"Плечи + Трапеции", color:"#A855F7", icon:"🔥",
+  { day:"СБ", code:"—", label:"Полный отдых",
     exercises:[
-      { name:"Жим штанги стоя (армейский)", sets:"4", reps:"8–10", rest:"90с", tip:"Главный строитель плеч. Не клади штангу за шею.", kali:false },
-      { name:"Тяга штанги к подбородку", sets:"3", reps:"10–12", rest:"75с", tip:"Широкий хват = средний пучок дельт.", kali:false },
-      { name:"Разводка гантелей в стороны", sets:"4", reps:"12–15", rest:"60с", tip:"Лёгкий вес + идеальная техника > тяжёлый с читингом.", kali:false },
-      { name:"Разводка в наклоне", sets:"3", reps:"12–15", rest:"60с", tip:"Задний пучок дельт = объём сзади. Не забывай!", kali:false },
-      { name:"Шраги со штангой", sets:"4", reps:"12–15", rest:"60с", tip:"Поднимай максимально вверх, задержись на секунду.", kali:false },
+      { name:"Полный отдых", sets:"—", reps:"—", rest:"—", tip:"Мышцы растут не в зале, а во время отдыха. Спи 8–9 часов.", kali:false },
     ]},
-  { day:"СБ", label:"Полный отдых", color:"#475569", icon:"😴",
+  { day:"ВС", code:"—", label:"Полный отдых",
     exercises:[
-      { name:"Полный отдых", sets:"—", reps:"—", rest:"—", tip:"Мышцы растут в отдыхе, не в зале. Ешь, спи 8-9 часов. Это рабочий день для роста.", kali:false },
-    ]},
-  { day:"ВС", label:"Полный отдых", color:"#475569", icon:"😴",
-    exercises:[
-      { name:"Полный отдых", sets:"—", reps:"—", rest:"—", tip:"Завтра снова в зал. Загружайся калориями, восстанавливайся. Рост происходит сейчас.", kali:false },
+      { name:"Полный отдых", sets:"—", reps:"—", rest:"—", tip:"В понедельник снова силовой день. Ешь, спи, восстанавливайся.", kali:false },
     ]},
 ];
 
+// ── DATA: SUPPLEMENTS ──
 const supps = [
-  { time:"06:00 Подъём", icon:"⏰", color:"#F59E0B",
-    subtitle:"Сразу после пробуждения — натощак",
+  { time:"06:00", label:"Подъём", subtitle:"Сразу после пробуждения — натощак",
     items:[
-      { name:"L-Tyrosine", dose:"750мг натощак", why:"Натощак = лучшее усвоение. Дофамин и фокус через 20–30 мин. Идеально перед утренним залом." },
-      { name:"Citicoline", dose:"1 капсула", why:"Разгоняет мозг до тренировки. Нейромышечная связь будет острее." },
-      { name:"Lions Mane", dose:"1 капсула", why:"Ментальная ясность. В синергии с Citicoline — хороший фокус." },
+      { name:"L-Tyrosine", dose:"750мг натощак", why:"Натощак — лучшее усвоение. Дофамин и фокус через 20–30 мин, идеально перед утренним залом." },
+      { name:"Citicoline", dose:"1 капсула", why:"Разгоняет мозг до тренировки. Нейромышечная связь острее." },
+      { name:"Lion's Mane", dose:"1 капсула", why:"Ментальная ясность в синергии с цитиколином." },
       { name:"Протеин ESN", dose:"20г с водой", why:"Защита от катаболизма. Быстро усваивается, не перегружает желудок." },
     ]},
-  { time:"06:15 Дорога", icon:"🚗", color:"#FF3D00",
-    subtitle:"По дороге в зал",
+  { time:"06:15", label:"Дорога", subtitle:"По пути в зал",
     items:[
-      { name:"Банан или финики", dose:"1шт / 5–6шт", why:"Быстрые углеводы = топливо для тренировки. Лёгкие, не тяжелят желудок." },
+      { name:"Банан или финики", dose:"1 шт / 5–6 шт", why:"Быстрые углеводы — топливо для тренировки, не тяжелят желудок." },
       { name:"Вода", dose:"300–400мл", why:"После сна тело обезвожено. Гидратация критична перед тренировкой." },
     ]},
-  { time:"06:30–07:30 Зал", icon:"🏋️", color:"#E8FF00",
-    subtitle:"Во время тренировки",
+  { time:"06:30", label:"Зал", subtitle:"Во время тренировки (06:30–07:30)",
     items:[
       { name:"Вода", dose:"500–700мл", why:"Пей каждые 15–20 минут. 2% обезвоживания снижает силу на 10–15%." },
-      { name:"Креатин (опц.)", dose:"5г в воде", why:"Можно добавить прямо в бутылку. Или принять после — разницы почти нет." },
+      { name:"Креатин (опц.)", dose:"5г в воде", why:"Можно добавить в бутылку — разницы с приёмом после почти нет." },
     ]},
-  { time:"07:30 После зала", icon:"💪", color:"#00BFFF",
-    subtitle:"В течение 20–30 минут",
+  { time:"07:30", label:"После зала", subtitle:"В течение 20–30 минут",
     items:[
-      { name:"Протеин ESN", dose:"35–40г", why:"Анаболическое окно открыто. Максимальное усвоение белка сразу после тренировки." },
-      { name:"Креатин", dose:"5г с протеином", why:"Если не брал в зал — после тренировки с едой оптимально." },
+      { name:"Протеин ESN", dose:"35–40г", why:"Анаболическое окно открыто — максимальное усвоение белка." },
+      { name:"Креатин", dose:"5г с протеином", why:"Если не брал в зал — с едой после тренировки оптимально." },
     ]},
-  { time:"08:00 Завтрак", icon:"🍳", color:"#22C55E",
-    subtitle:"С полноценным приёмом пищи",
+  { time:"08:00", label:"Завтрак", subtitle:"С полноценным приёмом пищи",
     items:[
       { name:"Vitamin D3", dose:"5000 IU", why:"Жирорастворимый — только с едой. Тестостерон, восстановление, иммунитет." },
-      { name:"Omega-3 (Omega 800)", dose:"2 капсулы", why:"С жирной едой усваивается лучше. Снижает воспаление после тренировки." },
-      { name:"Vitamin B Complex", dose:"1 капсула", why:"Энергия на весь день. Утром — чтобы не нарушало сон." },
-      { name:"CoQ10", dose:"100мг", why:"Митохондрии и сердечно-сосудистая поддержка. С едой содержащей жиры." },
+      { name:"Omega-3", dose:"2 капсулы", why:"С жирной едой усваивается лучше. Снижает воспаление после тренировки." },
+      { name:"Vitamin B Complex", dose:"1 капсула", why:"Энергия на весь день — утром, чтобы не мешало сну." },
+      { name:"CoQ10", dose:"100мг", why:"Митохондрии и сердечно-сосудистая поддержка, с едой содержащей жиры." },
     ]},
-  { time:"21:30 Вечер", icon:"🌙", color:"#A855F7",
-    subtitle:"За 1–2 часа до сна",
+  { time:"21:30", label:"Вечер", subtitle:"За 1–2 часа до сна",
     items:[
-      { name:"Ashwagandha", dose:"450мг", why:"Снижает кортизол после тяжёлого дня. Данные о росте тестостерона на 15–17%." },
-      { name:"Magnesium", dose:"500мг", why:"Главный помощник сна и восстановления мышц. Отдельно от цинка!" },
+      { name:"Ashwagandha", dose:"450мг", why:"Снижает кортизол после дня. Связана с ростом тестостерона на 15–17%." },
+      { name:"Magnesium", dose:"500мг", why:"Главный помощник сна и восстановления мышц. Отдельно от цинка." },
     ]},
-  { time:"22:00 Перед сном", icon:"⭐", color:"#06B6D4",
-    subtitle:"Минимум 30 минут после магния",
+  { time:"22:00", label:"Перед сном", subtitle:"Минимум 30 минут после магния",
     items:[
       { name:"Zinc Picolinate", dose:"22мг", why:"Тестостерон и иммунитет. Конкурирует с магнием — принимай отдельно." },
     ]},
-  { time:"❄️ Душ", icon:"🚿", color:"#06B6D4",
-    subtitle:"Важное правило",
+  { time:"Душ", label:"Температурный режим", subtitle:"Важное правило по времени",
     items:[
-      { name:"После тренировки (~07:30)", dose:"ОБЫЧНЫЙ тёплый", why:"Холодный сразу после зала замедляет рост мышц! Подавляет нужное воспаление." },
-      { name:"После завтрака / вечером", dose:"КОНТРАСТНЫЙ", why:"30с горячий / 30с холодный × 5–7 раз. Бодрость и восстановление нервной системы." },
+      { name:"После тренировки (~07:30)", dose:"обычный тёплый", why:"Холодный сразу после зала подавляет нужное воспаление и замедляет рост мышц." },
+      { name:"После завтрака / вечером", dose:"контрастный", why:"30с горячий / 30с холодный × 5–7 раз. Бодрость и восстановление нервной системы." },
     ]},
 ];
 
+// ── DATA: MEALS ──
 const meals = [
-  { time:"06:00 — Перед залом", name:"Быстрый старт", kcal:280, protein:22, carbs:35, fat:4, color:"#FF3D00", icon:"⚡",
+  { time:"06:00 · Перед залом", name:"Быстрый старт", kcal:280, protein:22, carbs:35, fat:4,
     foods:["Протеин ESN 20г с водой (шейкер)", "Банан 1шт или 5–6 фиников", "Вода 300–400мл"] },
-  { time:"07:30 — После зала", name:"Протеин + Креатин", kcal:200, protein:38, carbs:8, fat:2, color:"#00BFFF", icon:"💪",
-    foods:["Протеин ESN 35–40г с водой", "Креатин 5г (добавь в шейкер)", "Выпить в раздевалке или дома"] },
-  { time:"08:00 — Завтрак", name:"Полноценный завтрак", kcal:750, protein:50, carbs:85, fat:20, color:"#F59E0B", icon:"🍳",
-    foods:["Овсянка 120г на молоке", "4 яйца (2 целых + 2 белка)", "Банан или ягоды 100г", "Горсть орехов 30г", "Здесь: D3, Omega-3, B-комплекс, CoQ10"] },
-  { time:"11:30 — Перекус", name:"Второй завтрак", kcal:420, protein:32, carbs:48, fat:10, color:"#22C55E", icon:"🥛",
+  { time:"07:30 · После зала", name:"Протеин + креатин", kcal:200, protein:38, carbs:8, fat:2,
+    foods:["Протеин ESN 35–40г с водой", "Креатин 5г (в шейкер)", "Выпить в раздевалке или дома"] },
+  { time:"08:00 · Завтрак", name:"Полноценный завтрак", kcal:800, protein:52, carbs:95, fat:22,
+    foods:["Овсянка 150г на молоке", "4 яйца (2 целых + 2 белка)", "Банан или ягоды 100г", "Горсть орехов 30г", "Здесь: D3, Omega-3, B-комплекс, CoQ10"] },
+  { time:"11:30 · Перекус", name:"Второй завтрак", kcal:450, protein:32, carbs:55, fat:11,
     foods:["Творог 200г (5%) или йогурт 10% 300г", "Мёд 1 ч.л.", "Яблоко или груша", "Цельнозерновой хлеб 2 куска"] },
-  { time:"14:00 — Обед", name:"Главный приём", kcal:780, protein:52, carbs:85, fat:20, color:"#A855F7", icon:"🍚",
-    foods:["Гречка или рис 150г (сухой вес)", "Куриная грудка 220г или говядина 200г", "Овощи (огурец, помидор, перец)", "Оливковое масло 1 ст.л."] },
-  { time:"17:30 — Перекус", name:"Полдник", kcal:380, protein:28, carbs:42, fat:10, color:"#06B6D4", icon:"🥗",
+  { time:"14:00 · Обед", name:"Главный приём", kcal:850, protein:52, carbs:100, fat:22,
+    foods:["Гречка или рис 180г (сухой вес)", "Куриная грудка 220г или говядина 200г", "Овощи (огурец, помидор, перец)", "Оливковое масло 1 ст.л."] },
+  { time:"17:30 · Перекус", name:"Полдник", kcal:400, protein:28, carbs:48, fat:11,
     foods:["Греческий йогурт 200г", "Мюсли без сахара 40г", "Горсть ягод или фрукт"] },
-  { time:"20:00 — Ужин", name:"Вечерний приём", kcal:620, protein:48, carbs:55, fat:18, color:"#22C55E", icon:"🍽️",
-    foods:["Лосось 180г или куриное бедро 220г", "Картофель варёный 200г или макароны 100г", "Салат + оливковое масло"] },
-  { time:"22:00 — Перед сном", name:"Ночной протеин", kcal:320, protein:35, carbs:15, fat:12, color:"#475569", icon:"🌙",
-    foods:["Творог 9% 250г или йогурт 10% 350г", "Кефир 150мл или арахисовая паста 1 ст.л.", "Ashwagandha + Магний + Цинк"] },
+  { time:"20:00 · Ужин", name:"Вечерний приём", kcal:650, protein:48, carbs:60, fat:20,
+    foods:["Лосось 180г или куриное бедро 220г", "Картофель варёный 220г или макароны 120г", "Салат + оливковое масло"] },
+  { time:"22:00 · Перед сном", name:"Ночной протеин", kcal:340, protein:35, carbs:20, fat:12,
+    foods:["Творог 9% 250г или йогурт 10% 350г", "Кефир 150мл или арахисовая паста 1 ст.л.", "Ashwagandha + магний + цинк"] },
+];
+
+// ── DATA: KEY LIFTS FOR PROGRESSION ──
+const lifts = [
+  { name:"Жим штанги лёжа", day:"Верх A", range:"6–8", increment:2.5, defaultStart:60, unit:"кг" },
+  { name:"Тяга штанги в наклоне", day:"Верх A", range:"6–8", increment:2.5, defaultStart:50, unit:"кг" },
+  { name:"Жим штанги стоя", day:"Верх A", range:"6–8", increment:2.5, defaultStart:35, unit:"кг" },
+  { name:"Подтягивания (доп. вес)", day:"Верх A", range:"6–8", increment:2.5, defaultStart:0, unit:"кг" },
+  { name:"Присед со штангой", day:"Низ A", range:"6–8", increment:5, defaultStart:60, unit:"кг" },
+  { name:"Румынская тяга", day:"Низ A", range:"6–8", increment:5, defaultStart:60, unit:"кг" },
 ];
 
 // ── STATE ──
 let activeDay = 0;
 let activeSupp = 0;
+let activeLift = 0;
 
 // ── RENDER WORKOUTS ──
 function renderDays() {
   const sel = document.getElementById('daySelector');
   sel.innerHTML = days.map((d, i) => `
-    <button class="day-btn ${i === activeDay ? 'active' : ''}"
-      style="--day-color:${d.color}"
-      onclick="selectDay(${i})">${d.day}</button>
+    <button class="sel-btn ${i === activeDay ? 'active' : ''}" onclick="selectDay(${i})">${d.day}<span class="sub">${d.code}</span></button>
   `).join('');
   renderDayCard();
 }
 
-function selectDay(i) {
-  activeDay = i;
-  renderDays();
-}
+function selectDay(i) { activeDay = i; renderDays(); }
 
 function renderDayCard() {
   const d = days[activeDay];
   document.getElementById('dayCard').innerHTML = `
-    <div class="card" style="border-color:${d.color}25;box-shadow:0 0 40px ${d.color}08">
-      <div class="card-header" style="background:linear-gradient(135deg,${d.color}15 0%,transparent 70%)">
-        <div class="card-header-icon">${d.icon}</div>
+    <div class="card">
+      <div class="card-header">
+        <div class="code-badge">${d.code}</div>
         <div>
-          <div class="card-tag" style="color:${d.color}">${d.day} · ${d.exercises.length} упражнений</div>
+          <div class="card-tag">${d.day} · ${d.exercises.length} упражнений</div>
           <div class="card-title">${d.label}</div>
         </div>
       </div>
       ${d.exercises.map(ex => `
-        <div class="ex-item" style="--ex-color:${ex.kali ? '#E8FF00' : d.color}">
+        <div class="ex-item">
           <div class="ex-top">
             <div>
               <div class="ex-name">${ex.name}</div>
-              ${ex.kali ? '<div class="ex-badge">КАЛИСТЕНИКА</div>' : ''}
+              ${ex.kali ? '<div class="ex-tag">калистеника</div>' : ''}
             </div>
             <div class="ex-stats">
-              <div class="ex-stat"><div class="ex-stat-label">СЕТ</div><div class="ex-stat-val" style="color:${ex.kali ? '#E8FF00' : d.color}">${ex.sets}</div></div>
-              <div class="ex-stat"><div class="ex-stat-label">ПОВ</div><div class="ex-stat-val" style="color:${ex.kali ? '#E8FF00' : d.color}">${ex.reps}</div></div>
-              <div class="ex-stat"><div class="ex-stat-label">ОТД</div><div class="ex-stat-val" style="color:${ex.kali ? '#E8FF00' : d.color}">${ex.rest}</div></div>
+              <div class="ex-stat"><div class="ex-stat-label">сет</div><div class="ex-stat-val">${ex.sets}</div></div>
+              <div class="ex-stat"><div class="ex-stat-label">пов</div><div class="ex-stat-val">${ex.reps}</div></div>
+              <div class="ex-stat"><div class="ex-stat-label">отд</div><div class="ex-stat-val">${ex.rest}</div></div>
             </div>
           </div>
-          <div class="ex-tip">💡 ${ex.tip}</div>
+          <div class="ex-tip">${ex.tip}</div>
         </div>
       `).join('')}
     </div>
@@ -445,37 +468,32 @@ function renderDayCard() {
 function renderSupps() {
   const sel = document.getElementById('suppSelector');
   sel.innerHTML = supps.map((s, i) => `
-    <button class="supp-btn ${i === activeSupp ? 'active' : ''}"
-      style="--s-color:${s.color}"
-      onclick="selectSupp(${i})">${s.icon} ${s.time.split(' ')[0]}</button>
+    <button class="sel-btn ${i === activeSupp ? 'active' : ''}" onclick="selectSupp(${i})">${s.time}<span class="sub">${s.label}</span></button>
   `).join('');
   renderSuppCard();
   renderCheatsheet();
 }
 
-function selectSupp(i) {
-  activeSupp = i;
-  renderSupps();
-}
+function selectSupp(i) { activeSupp = i; renderSupps(); }
 
 function renderSuppCard() {
   const s = supps[activeSupp];
   document.getElementById('suppCard').innerHTML = `
-    <div class="card" style="border-color:${s.color}25;box-shadow:0 0 40px ${s.color}08">
-      <div class="card-header" style="background:linear-gradient(135deg,${s.color}15 0%,transparent 70%)">
-        <div class="card-header-icon">${s.icon}</div>
+    <div class="card">
+      <div class="card-header">
+        <div class="code-badge">${s.time.replace(':','')}</div>
         <div>
-          <div class="card-tag" style="color:${s.color}">${s.time}</div>
+          <div class="card-tag">${s.time} · ${s.label}</div>
           <div class="card-title">${s.subtitle}</div>
         </div>
       </div>
       ${s.items.map(item => `
-        <div class="supp-item" style="--s-color:${s.color}">
+        <div class="supp-item">
           <div class="supp-row">
             <div class="supp-name">${item.name}</div>
-            <div class="supp-dose" style="background:color-mix(in srgb,${s.color} 15%,transparent);color:${s.color}">${item.dose}</div>
+            <div class="supp-dose">${item.dose}</div>
           </div>
-          <div class="supp-why">💡 ${item.why}</div>
+          <div class="supp-why">${item.why}</div>
         </div>
       `).join('')}
     </div>
@@ -483,40 +501,134 @@ function renderSuppCard() {
 }
 
 function renderCheatsheet() {
-  document.getElementById('cheatsheet').innerHTML = `
-    <div class="cheatsheet-title">Шпаргалка — весь день</div>
-    ${supps.map(s => `
-      <div class="cheat-row">
-        <div class="cheat-time" style="color:${s.color}">${s.time.split(' ')[0]}</div>
-        <div class="cheat-items">${s.items.map(i => i.name).join(' · ')}</div>
-      </div>
-    `).join('')}
-  `;
+  document.getElementById('cheatsheet').innerHTML = supps.map(s => `
+    <div class="cheat-row">
+      <div class="cheat-time">${s.time}</div>
+      <div class="cheat-items">${s.items.map(i => i.name).join(' · ')}</div>
+    </div>
+  `).join('');
 }
 
 // ── RENDER MEALS ──
 function renderMeals() {
   document.getElementById('mealsContainer').innerHTML = meals.map(m => `
-    <div class="meal-card" style="border-color:${m.color}25">
-      <div class="meal-header" style="background:linear-gradient(90deg,${m.color}15 0%,transparent 100%)">
-        <div class="meal-left">
-          <div class="meal-icon">${m.icon}</div>
-          <div>
-            <div class="meal-time" style="color:${m.color}">${m.time}</div>
-            <div class="meal-name">${m.name}</div>
-          </div>
+    <div class="meal-card">
+      <div class="meal-header">
+        <div>
+          <div class="meal-time">${m.time}</div>
+          <div class="meal-name">${m.name}</div>
         </div>
         <div class="meal-macros">
-          <div class="macro"><div class="macro-label">ккал</div><div class="macro-val" style="color:#E8FF00">${m.kcal}</div></div>
-          <div class="macro"><div class="macro-label">белок</div><div class="macro-val" style="color:#FF3D00">${m.protein}г</div></div>
-          <div class="macro"><div class="macro-label">углев</div><div class="macro-val" style="color:#00BFFF">${m.carbs}г</div></div>
+          <div class="macro"><div class="macro-label">ккал</div><div class="macro-val">${m.kcal}</div></div>
+          <div class="macro"><div class="macro-label">белок</div><div class="macro-val">${m.protein}г</div></div>
+          <div class="macro"><div class="macro-label">углев</div><div class="macro-val">${m.carbs}г</div></div>
         </div>
       </div>
       <div class="meal-foods">
-        ${m.foods.map(f => `<div class="food-item"><span style="color:${m.color};margin-right:8px">→</span>${f}</div>`).join('')}
+        ${m.foods.map(f => `<div class="food-item">— ${f}</div>`).join('')}
       </div>
     </div>
   `).join('');
+}
+
+// ── PROGRESSION: TIMELINE ──
+const planStart = new Date(2026, 8, 28); // понедельник, 28 сентября 2026 — неделя 1
+const PHASE1_WEEKS = 22; // набор: конец сентября — конец февраля
+const PHASE2_WEEKS = 14; // рельеф: март — начало июня
+const TOTAL_WEEKS = PHASE1_WEEKS + PHASE2_WEEKS;
+
+function renderTimeline() {
+  const now = new Date();
+  let weeksElapsed = (now - planStart) / (1000 * 60 * 60 * 24 * 7);
+  weeksElapsed = Math.max(0, Math.min(weeksElapsed, TOTAL_WEEKS));
+  const pct = (weeksElapsed / TOTAL_WEEKS) * 100;
+  const phase1Pct = (PHASE1_WEEKS / TOTAL_WEEKS) * 100;
+  const weekNum = Math.floor(weeksElapsed) + 1;
+  const inPhase1 = weeksElapsed < PHASE1_WEEKS;
+  const status = inPhase1
+    ? `Неделя ${weekNum} из ${TOTAL_WEEKS} · Фаза 1 — набор массы и силы`
+    : `Неделя ${weekNum} из ${TOTAL_WEEKS} · Фаза 2 — раскрытие рельефа`;
+
+  document.getElementById('timeline').innerHTML = `
+    <div class="timeline-labels"><span>Набор · ${PHASE1_WEEKS} нед</span><span>Рельеф · ${PHASE2_WEEKS} нед</span></div>
+    <div class="timeline-track">
+      <div class="timeline-fill" style="width:${phase1Pct}%"></div>
+      <div class="timeline-marker" style="left:${pct}%"></div>
+    </div>
+    <div class="timeline-status">${status}</div>
+    <div class="timeline-sub">Ориентир: набор — конец сентября 2026 до конца февраля 2027; рельеф — март до начала июня 2027, к лету.</div>
+  `;
+}
+
+// ── PROGRESSION: LIFT TABLES ──
+function getStartWeight(lift) {
+  try {
+    const saved = localStorage.getItem('lift_' + lift.name);
+    if (saved !== null && saved !== '') return parseFloat(saved);
+  } catch (e) {}
+  return lift.defaultStart;
+}
+
+function setStartWeight(lift, val) {
+  try { localStorage.setItem('lift_' + lift.name, val); } catch (e) {}
+}
+
+function buildProgression(startWeight, incrementKg, checkpoints, deloadEvery) {
+  let w = startWeight;
+  const rows = [];
+  for (let i = 0; i < checkpoints; i++) {
+    const weekStart = i * 2 + 1;
+    const weekEnd = weekStart + 1;
+    let deload = false;
+    if (i > 0) {
+      if (i % deloadEvery === 0) {
+        w = Math.round((w * 0.9) / 2.5) * 2.5;
+        deload = true;
+      } else {
+        w = w + incrementKg;
+      }
+    }
+    rows.push({ label: `Нед ${weekStart}–${weekEnd}`, weight: w, deload });
+  }
+  return rows;
+}
+
+function renderLiftSelector() {
+  const sel = document.getElementById('liftSelector');
+  sel.innerHTML = lifts.map((l, i) => `
+    <button class="sel-btn ${i === activeLift ? 'active' : ''}" onclick="selectLift(${i})">${l.name.split(' ').slice(0,2).join(' ')}<span class="sub">${l.day}</span></button>
+  `).join('');
+  renderLiftCard();
+}
+
+function selectLift(i) { activeLift = i; renderLiftSelector(); }
+
+function renderLiftCard() {
+  const l = lifts[activeLift];
+  const start = getStartWeight(l);
+  const rows = buildProgression(start, l.increment, 10, 4);
+  document.getElementById('liftCard').innerHTML = `
+    <div class="card">
+      <div class="lift-input-row">
+        <div class="lift-input-label"><strong>${l.name}</strong>${l.day} · диапазон ${l.range} · шаг ${l.increment}${l.unit}</div>
+        <input class="lift-input" type="number" step="${l.increment}" value="${start}" oninput="updateLiftStart(${activeLift}, this.value)"/>
+      </div>
+      <table class="prog-table">
+        <thead><tr><th>Период</th><th>Рабочий вес</th></tr></thead>
+        <tbody>
+          ${rows.map(r => `<tr><td>${r.label}${r.deload ? ' · разгрузка' : ''}</td><td class="wt ${r.deload ? 'deload' : ''}">${r.weight}${l.unit}</td></tr>`).join('')}
+        </tbody>
+      </table>
+      <div class="prog-note">После 20 недель — пересчитай рабочие максимумы и начни новый цикл от достигнутого веса. Если диапазон повторений даётся тяжелее указанного — задержись на текущем весе ещё одну-две недели, прежде чем добавлять.</div>
+    </div>
+  `;
+}
+
+function updateLiftStart(index, value) {
+  const l = lifts[index];
+  const val = parseFloat(value);
+  if (!isNaN(val)) setStartWeight(l, val);
+  if (index === activeLift) renderLiftCard();
 }
 
 // ── TAB SWITCH ──
@@ -531,9 +643,10 @@ function switchTab(id, btn) {
 renderDays();
 renderSupps();
 renderMeals();
+renderTimeline();
+renderLiftSelector();
 
 // ── AUTO SELECT TODAY ──
-const dayMap = [0,1,2,3,4,5,6]; // Sun=0
 const todayJS = new Date().getDay();
 const todayIdx = todayJS === 0 ? 6 : todayJS - 1;
 if (todayIdx >= 0 && todayIdx < 7) {
