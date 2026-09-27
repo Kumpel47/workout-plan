@@ -236,6 +236,8 @@
 
   <div class="note">Схема: <strong>двойная прогрессия</strong>. Работай в диапазоне повторений — сначала добавляй повторения, и только когда верх диапазона взят на всех подходах с чистой техникой, добавляй вес и возвращайся к низу диапазона. Каждые 8 недель (раз в 4 чекпоинта) — разгрузочная неделя: рабочий вес ниже на ~10%, акцент на технику.</div>
 
+  <div class="section-label">День</div>
+  <div class="selector-row" id="liftGroupSelector"></div>
   <div class="section-label">Упражнение</div>
   <div class="selector-row" id="liftSelector"></div>
   <div id="liftCard"></div>
@@ -407,19 +409,42 @@ const meals = [
     foods:["Творог 9% 250г или йогурт 10% 350г", "Кефир 150мл или арахисовая паста 1 ст.л.", "Ashwagandha + магний + цинк"] },
 ];
 
-// ── DATA: KEY LIFTS FOR PROGRESSION ──
-const lifts = [
-  { name:"Жим штанги лёжа", day:"Верх A", range:"6–8", increment:2.5, defaultStart:60, unit:"кг" },
-  { name:"Тяга штанги в наклоне", day:"Верх A", range:"6–8", increment:2.5, defaultStart:50, unit:"кг" },
-  { name:"Жим штанги стоя", day:"Верх A", range:"6–8", increment:2.5, defaultStart:35, unit:"кг" },
-  { name:"Подтягивания (доп. вес)", day:"Верх A", range:"6–8", increment:2.5, defaultStart:0, unit:"кг" },
-  { name:"Присед со штангой", day:"Низ A", range:"6–8", increment:5, defaultStart:60, unit:"кг" },
-  { name:"Румынская тяга", day:"Низ A", range:"6–8", increment:5, defaultStart:60, unit:"кг" },
+// ── DATA: LIFTS FOR PROGRESSION — вся программа, сгруппировано по дням ──
+const liftGroups = [
+  { code:"A1", label:"Верх A", lifts:[
+    { name:"Жим штанги лёжа", range:"6–8", increment:2.5, defaultStart:60, unit:"кг" },
+    { name:"Тяга штанги в наклоне", range:"6–8", increment:2.5, defaultStart:50, unit:"кг" },
+    { name:"Жим штанги стоя", range:"6–8", increment:2.5, defaultStart:35, unit:"кг" },
+    { name:"Подтягивания (доп. вес)", range:"6–8", increment:2.5, defaultStart:0, unit:"кг" },
+    { name:"Французский жим лёжа", range:"8–10", increment:2.5, defaultStart:20, unit:"кг" },
+  ]},
+  { code:"A2", label:"Низ A", lifts:[
+    { name:"Присед со штангой", range:"6–8", increment:5, defaultStart:60, unit:"кг" },
+    { name:"Румынская тяга", range:"6–8", increment:5, defaultStart:60, unit:"кг" },
+    { name:"Жим ногами", range:"8–10", increment:10, defaultStart:80, unit:"кг" },
+    { name:"Подъём на носки стоя", range:"8–10", increment:5, defaultStart:40, unit:"кг" },
+  ]},
+  { code:"B1", label:"Верх B", lifts:[
+    { name:"Жим гантелей на наклонной (за руку)", range:"10–12", increment:2, defaultStart:16, unit:"кг" },
+    { name:"Тяга горизонтального блока", range:"12–15", increment:2.5, defaultStart:40, unit:"кг" },
+    { name:"Отжимания на брусьях (доп. вес)", range:"8–10", increment:2.5, defaultStart:0, unit:"кг" },
+    { name:"Разводка гантелей в стороны (за руку)", range:"12–15", increment:1, defaultStart:6, unit:"кг" },
+    { name:"Сгибания со штангой стоя", range:"10–12", increment:2.5, defaultStart:20, unit:"кг" },
+    { name:"Молотки с гантелями (за руку)", range:"12–15", increment:1, defaultStart:10, unit:"кг" },
+  ]},
+  { code:"B2", label:"Низ B", lifts:[
+    { name:"Становая тяга", range:"8–10", increment:5, defaultStart:60, unit:"кг" },
+    { name:"Выпады с гантелями (за руку)", range:"12–15", increment:2, defaultStart:12, unit:"кг" },
+    { name:"Пистолетик (доп. вес)", range:"6–8", increment:2.5, defaultStart:0, unit:"кг" },
+    { name:"Сгибания ног лёжа", range:"12–15", increment:5, defaultStart:30, unit:"кг" },
+    { name:"Подъём на носки сидя", range:"15–20", increment:5, defaultStart:30, unit:"кг" },
+  ]},
 ];
 
 // ── STATE ──
 let activeDay = 0;
 let activeSupp = 0;
+let activeLiftGroup = 0;
 let activeLift = 0;
 
 // ── RENDER WORKOUTS ──
@@ -593,10 +618,21 @@ function buildProgression(startWeight, incrementKg, checkpoints, deloadEvery) {
   return rows;
 }
 
+function renderLiftGroupSelector() {
+  const sel = document.getElementById('liftGroupSelector');
+  sel.innerHTML = liftGroups.map((g, i) => `
+    <button class="sel-btn ${i === activeLiftGroup ? 'active' : ''}" onclick="selectLiftGroup(${i})">${g.code}<span class="sub">${g.label}</span></button>
+  `).join('');
+  renderLiftSelector();
+}
+
+function selectLiftGroup(i) { activeLiftGroup = i; activeLift = 0; renderLiftGroupSelector(); }
+
 function renderLiftSelector() {
+  const group = liftGroups[activeLiftGroup];
   const sel = document.getElementById('liftSelector');
-  sel.innerHTML = lifts.map((l, i) => `
-    <button class="sel-btn ${i === activeLift ? 'active' : ''}" onclick="selectLift(${i})">${l.name.split(' ').slice(0,2).join(' ')}<span class="sub">${l.day}</span></button>
+  sel.innerHTML = group.lifts.map((l, i) => `
+    <button class="sel-btn ${i === activeLift ? 'active' : ''}" onclick="selectLift(${i})">${l.name.split(' ').slice(0,2).join(' ')}</button>
   `).join('');
   renderLiftCard();
 }
@@ -604,14 +640,14 @@ function renderLiftSelector() {
 function selectLift(i) { activeLift = i; renderLiftSelector(); }
 
 function renderLiftCard() {
-  const l = lifts[activeLift];
+  const l = liftGroups[activeLiftGroup].lifts[activeLift];
   const start = getStartWeight(l);
   const rows = buildProgression(start, l.increment, 10, 4);
   document.getElementById('liftCard').innerHTML = `
     <div class="card">
       <div class="lift-input-row">
-        <div class="lift-input-label"><strong>${l.name}</strong>${l.day} · диапазон ${l.range} · шаг ${l.increment}${l.unit}</div>
-        <input class="lift-input" type="number" step="${l.increment}" value="${start}" oninput="updateLiftStart(${activeLift}, this.value)"/>
+        <div class="lift-input-label"><strong>${l.name}</strong>диапазон ${l.range} · шаг ${l.increment}${l.unit}</div>
+        <input class="lift-input" type="number" step="${l.increment}" value="${start}" oninput="updateLiftStart(this.value)"/>
       </div>
       <table class="prog-table">
         <thead><tr><th>Период</th><th>Рабочий вес</th></tr></thead>
@@ -624,11 +660,11 @@ function renderLiftCard() {
   `;
 }
 
-function updateLiftStart(index, value) {
-  const l = lifts[index];
+function updateLiftStart(value) {
+  const l = liftGroups[activeLiftGroup].lifts[activeLift];
   const val = parseFloat(value);
   if (!isNaN(val)) setStartWeight(l, val);
-  if (index === activeLift) renderLiftCard();
+  renderLiftCard();
 }
 
 // ── TAB SWITCH ──
@@ -644,7 +680,7 @@ renderDays();
 renderSupps();
 renderMeals();
 renderTimeline();
-renderLiftSelector();
+renderLiftGroupSelector();
 
 // ── AUTO SELECT TODAY ──
 const todayJS = new Date().getDay();
